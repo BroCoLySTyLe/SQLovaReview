@@ -20,12 +20,12 @@ author: KBG
 - Salesforce에서 공개한 WikiSQL dataset은 Natural Language to SQL task의 대표적인 dataset 입니다.
 - wikiSQL dataset은 Relational Database의 자연어 인터페이스를 구축하기 위한 목적으로 만들어 졌습니다.
 
-![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/image/wikiSQL1.png)
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/image/wikiSQL1.png)
 
 - wikiSQL dataset은 위의 그림과 같이 자연어로된 Question과 Table정보를 주고 Question의 정답을 찾기위한 **SQL**을 생성해 정답을 찾아내는 형식의 데이터셋 입니다. 
 
 
-![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/image/wikiSQL2.png)
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/image/wikiSQL2.png)
 
 - wikiSQL dataset은 자연어 Question인 **NL** , Table의 해더정보인 **TBL** , SQL문의 ground truth인 **SQL(T)** , 자연어 Quesion의 정답인 **ANS(T)** 로 구성되어 있습니다.
   -  **SQL(**P**)** 와 **ANS(**P**)** 는 SQLova 모델의 Predicted SQL과 Predicted SQL문을 이용하여 얻은 정답 값이고 위의 데이터 예시처럼 ground truth가 잘못된 것들이 존재합니다.  
