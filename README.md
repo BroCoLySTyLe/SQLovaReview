@@ -54,5 +54,38 @@ author: KBG
 
 #### **Table-Aware BERT**
 
+
+Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 테이블의 헤더정보들을 효과적으로 인코딩하기 위해 만들어진 모델입니다.
+기존 BERT에 대한 개념은 ([BERT paper](https://arxiv.org/pdf/1810.04805.pdf))를 참고하시거나 *TmaxAI BERT post* ([Tmax AI BERT post](https://tmaxai.github.io/post/BERT/))를 참고하시면 쉽게 이해할 것 같습니다.
+
+
+
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/table_aware_BERT.png)
+
+위의 그림에서 보시는것 처럼 Table-Aware BERT는 하늘색으로 표시된 CLS 토큰과 빨강색으로 표시된 자연어 Question 그리고 초록색으로 표시된 테이블의 헤더들 이것들을 각각 구분하기위해 회색으로 표시된 SEP 토큰을 인풋으로 갖게 됩니다.
+인풋은 기존의 BERT 처럼 워드의 임베딩값과 position embedding , segment embedding 을 더한 vector값을 인풋으로 가지게 됩니다. 
+그렇게 되면 Table-Aware BERT를 통해 각각 토큰의 Hidden Vector값이 나오게 됩니다. 이 word contextualization이 반영된 Hidden Vector 값을 이용하여 뒤에 나올 3가지 model scheme을 가지고 Natural Language to SQL task의 성는을 크게 높인 것이 핵심입니다.
+
+
+##### **3 model scheme**
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/3model_scheme.png)
+
+논문에서 설명하는 3가지 모델 scheme에 대해서 살펴보겠습니다. 우선 논문에서는 3가지 모델 scheme중 이 논문에서 중점적으로 다루고 있는 shallow layer에 대해서 우선 살펴보겠습니다. (SQLova는 성능이 가장 잘 나온 C scheme입니다.)
+
+###### **Shallow Layer**
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/shallow.PNG)
+
+shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단한 구조로 Table-Aware BERT 를 fine-tuning 하기위한 loss function으로만 구성된 layer입니다.
+기존의 BERT도 contextualized language representation(BERT)의 우수성을 증명하기 위해 여러 NLP task들을 풀때 새로운 parameter 를 가지는 layer를 추가하기보다는 해당 NLP task를 풀기위한 loss function만 가지고도 좋은 성능을 낸다는 것을 보였고, 이 논문에서도 역시 Natural Language to SQL task에서의 Table-Aware BERT의 우수성을 보이기 위해 Table-Aware BERT를 fine-tuning을 하기위해 loss function으로 구성된 최소의 layer를 구성한 것이 shallow layer 입니다.
+
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/formula1.PNG)
+
+식 (1)을 살펴보면 SELECT 문에 들어갈 column을 정하기 위한 식 입니다. 위의 shallow-layer 그림에서 초록색에 해당하는 테이블 해더들의 히든백터값의 0번째 인덱스 값들을 softmax 하여 어떤 테이블 해더가 SELECT 문에 들어갈 column 인지 정하게 됩니다.
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/formula2.PNG)
+
+식 (2)을 살펴보면 SELECT 문에 들어갈 column에 적용할 aggregation(max, min, count, avg 등)을 정해줍니다. 식(1)에서 정해진 테이블 해더의 히든백터의 1번째 ~ 6번째 인덱스 값이 각각 aggregation(NONE ~ AVG)의 score를 가지게 되고 softmax를 통해 한가지의 aggregation을 정하게 됩니다. (NONE이 activation 될경우 aggregation 없음)
 
