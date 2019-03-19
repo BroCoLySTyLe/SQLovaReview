@@ -63,6 +63,7 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/tableawareBERT.png)
 
 위의 그림에서 보시는것 처럼 Table-Aware BERT는 하늘색으로 표시된 CLS 토큰과 빨강색으로 표시된 자연어 Question 그리고 초록색으로 표시된 테이블의 헤더들 이것들을 각각 구분하기위해 회색으로 표시된 SEP 토큰을 인풋으로 갖게 됩니다.
+
 인풋은 기존의 BERT 처럼 워드의 임베딩값과 position embedding , segment embedding 을 더한 vector값을 인풋으로 가지게 됩니다. 
 그렇게 되면 Table-Aware BERT를 통해 각각 토큰의 Hidden Vector값이 나오게 됩니다. 이 word contextualization이 반영된 Hidden Vector 값을 이용하여 뒤에 나올 3가지 model scheme을 가지고 Natural Language to SQL task의 성는을 크게 높인 것이 핵심입니다.
 
@@ -78,6 +79,7 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/shallow.png)
 
 shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단한 구조로 Table-Aware BERT 를 fine-tuning 하기위한 loss function으로만 구성된 layer입니다.
+
 기존의 BERT도 contextualized language representation(BERT)의 우수성을 증명하기 위해 여러 NLP task들을 풀때 새로운 parameter 를 가지는 layer를 추가하기보다는 해당 NLP task를 풀기위한 loss function만 가지고도 좋은 성능을 낸다는 것을 보였고, 이 논문에서도 역시 Natural Language to SQL task에서의 Table-Aware BERT의 우수성을 보이기 위해 Table-Aware BERT를 fine-tuning을 하기위해 loss function으로 구성된 최소의 layer를 구성한 것이 shallow layer 입니다.
 
 
@@ -106,7 +108,19 @@ shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단
 
 마지막으로 식 (6)과 식 (7)을 살펴보면 자연어로 된 질문으로 부터 where절의 value값들을 찾아주게 됩니다.
 식 (6)은 자연어로 된 Question에서 where절에 들어갈 value의 시작(start)이 될 지점을 찾아주고 식(7)은 자연어로 된 Question에서 where절에 들어갈 value의 끝(end)이 될 지점을 찾아줍니다. 
+
 식 (6)은 위에서 찾은 뮤값을 통해 뮤값이 2라면 where절에 들어갈 조건이 2개이므로 value가 2개가 되어야하고 첫번째 where절의 value의 시작을 위의 shallow-layer 그림에서 빨간색에 해당하는 자연어 Quesion의 히든백터들의 1번째 인덱스 값들을 softmax를 취해서 찾게 됩니다. 마찬가지로 두번째 where절의 value의 시작은 자연어 Quesion의 히든백터들의 2번째 인덱스 값들을 softmax를 취해서 찾게됩니다.
+
 식 (6)에서 value의 start 지점을 찾았다면 식 (7)에서는 같은 방법으로 value의 end지점을 찾습니다. 첫번째 where절의 value의 끝(end)을 위의 shallow-layer 그림에서 빨간색에 해당하는 자연어 Quesion의 히든백터들의 101(1+100)번째 인덱스 값들을 softmax를 취해서 찾게 됩니다.
+
 그리하여 자연어로 된 Question에서 첫번째 토큰의 1번째 인덱스의 히든백터값과 세번째 토큰의 101번째 인덱스의 히든백터값이 softmax를 통해 선택되면 첫번째 where절 조건의 value는 자연어 Quesion의 첫번째 토큰부터 세번째 토큰까지가 됩니다.
+
+
+
+
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/decoder.png)
+
+
+
 
