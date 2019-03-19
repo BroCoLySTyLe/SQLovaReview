@@ -48,11 +48,12 @@ author: 김병건
  ---
 ## **SQLova paper**
 우선적으로 이 논문의 contribution을 먼저 짚고 넘어가겠습니다.
-#### contribution
+
+### **contribution**
 - Natural Language to SQL과 같은 structured data를 이용하는 task에서 BERT와 같이 문맥을 반영한 단어 정보를 이용할 수 있는 Natural Language Representation를 적용하고 그 효용성을 입증
 - Table-Aware BERT 모델을 이용하여서 wikiSQL의 leader board에서 기존 state-of-the-art 성능 대비 큰 성능향상을 보인 것  
 
-#### **Table-Aware BERT**
+### **Table-Aware BERT**
 
 
 Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 테이블의 헤더정보들을 효과적으로 인코딩하기 위해 만들어진 모델입니다.
@@ -74,7 +75,7 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 
 논문에서 설명하는 3가지 모델 scheme에 대해서 살펴보겠습니다. 우선 논문에서는 3가지 모델 scheme중 이 논문에서 중점적으로 다루고 있는 shallow layer에 대해서 우선 살펴보겠습니다. (SQLova는 성능이 가장 잘 나온 C scheme입니다.)
 
-###### **Shallow Layer**
+#### **Shallow Layer**
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/shallow.png)
 
@@ -117,7 +118,7 @@ shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단
 
 여기까지가 shallow layer에 대한 설명이 되겠습니다.
 
-###### **Decoder-Layer & NL2SQL-Layer**
+#### **Decoder-Layer & NL2SQL-Layer**
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/decoder.png)
 
