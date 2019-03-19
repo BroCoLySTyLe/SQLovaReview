@@ -158,7 +158,7 @@ Table3은 SQLova와 Shallow-Layer의 성능을 6가지 componenet별로 비교�
 
 
 
-![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/result3.png)
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/result3.PNG)
 
 Table4는 ablation study를 진행한 결과인데, 첫번째 줄은 이 논문의 SQLova의 성능이고 두번째줄은 이 논문에서 사용한 BERT-large(Table-Aware BERT)대신에 BERT-Base를 사용한 성능이고, 세번째줄은 Table-Aware BERT의 fine-tuning을 적용하지 않은모델의 성능이고, 네번째줄은 BERT-large대신에 GloVe를 사용했을때의 결과입니다.
 
