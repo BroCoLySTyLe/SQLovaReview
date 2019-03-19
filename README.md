@@ -75,7 +75,7 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 
 ###### **Shallow Layer**
 
-![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/shallow.PNG)
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/shallow.png)
 
 shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단한 구조로 Table-Aware BERT 를 fine-tuning 하기위한 loss function으로만 구성된 layer입니다.
 기존의 BERT도 contextualized language representation(BERT)의 우수성을 증명하기 위해 여러 NLP task들을 풀때 새로운 parameter 를 가지는 layer를 추가하기보다는 해당 NLP task를 풀기위한 loss function만 가지고도 좋은 성능을 낸다는 것을 보였고, 이 논문에서도 역시 Natural Language to SQL task에서의 Table-Aware BERT의 우수성을 보이기 위해 Table-Aware BERT를 fine-tuning을 하기위해 loss function으로 구성된 최소의 layer를 구성한 것이 shallow layer 입니다.
