@@ -1,7 +1,7 @@
 ---
 layout: "post"
 title: "SQLova"
-date: "2019-02-23 21:14"
+date: "2019-03-19 17:00"
 category: Paper Review
 tag: [NLP, wikiSQL, Natural Language to SQL, 고급]
 author: 김병건
