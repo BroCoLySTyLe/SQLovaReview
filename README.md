@@ -75,6 +75,8 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 
 논문에서 설명하는 3가지 모델 scheme에 대해서 살펴보겠습니다. 우선 논문에서는 3가지 모델 scheme중 이 논문에서 중점적으로 다루고 있는 shallow layer에 대해서 우선 살펴보겠습니다. (SQLova는 성능이 가장 잘 나온 C scheme입니다.)
 
+
+---
 #### **Shallow Layer**
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/shallow.png)
@@ -118,6 +120,8 @@ shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단
 
 여기까지가 shallow layer에 대한 설명이 되겠습니다.
 
+
+---
 #### **Decoder-Layer & NL2SQL-Layer**
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/decoder.png)
@@ -132,7 +136,7 @@ NL2SQL-Layer(SQLova)는 Table-Aware BERT의 output(히든백터)값을 이용하
 
 
 
-
+---
 #### **Experiment**
 
 이제 Experiment 부분을 간단하게 살펴보고 포스트를 마치겠습니다.
