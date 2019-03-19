@@ -61,7 +61,6 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/tableawareBERT.png)
-![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/tableawareBERT.png)
 
 위의 그림에서 보시는것 처럼 Table-Aware BERT는 하늘색으로 표시된 CLS 토큰과 빨강색으로 표시된 자연어 Question 그리고 초록색으로 표시된 테이블의 헤더들 이것들을 각각 구분하기위해 회색으로 표시된 SEP 토큰을 인풋으로 갖게 됩니다.
 인풋은 기존의 BERT 처럼 워드의 임베딩값과 position embedding , segment embedding 을 더한 vector값을 인풋으로 가지게 됩니다. 
