@@ -89,3 +89,24 @@ shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단
 
 식 (2)을 살펴보면 SELECT 문에 들어갈 column에 적용할 aggregation(max, min, count, avg 등)을 정해줍니다. 식(1)에서 정해진 테이블 해더의 히든백터의 1번째 ~ 6번째 인덱스 값이 각각 aggregation(NONE ~ AVG)의 score를 가지게 되고 softmax를 통해 한가지의 aggregation을 정하게 됩니다. (NONE이 activation 될경우 aggregation 없음)
 
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/formula3.PNG)
+
+식 (3)을 살펴보면 CLS 히든백터 값을 가지고 where절 조건이 몇개가 필요한지를 나타내는 뮤값 정해줍니다. 위의 shallow-layer 그림에서 하늘색에 해당하는 CLS 히든백터의 0번째~4번째 인덱스값을 가지고 뮤값을 정해주는데 예를들어 0번째 인덱스가 activation 되면 where절에 조건이 0개가 되고 3번째 인덱스가 activation이 되면 where절의 3개의 조건이 and로 엮이게 됩니다.
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/formula4.PNG)
+
+식 (4)을 살펴보면 where절에 들어갈 조건이 될 column을 정해줍니다. 위의 shallow-layer 그림에서 초록색에 해당하는 테이블 해더들의 히든백터값의 7번째 인덱스 값들을 sigmoid를 적용하여 where절에 들어갈 조건이 될 column을 정해줍니다. softmax가 아닌 sigmoid를 적용하는 이유는 where절에 들어갈 조건이되는 column이 0개이거나 2개이상일수도 있기 때문입니다.
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/formula5.PNG)
+
+식 (5)를 살펴보면 where절에 들어갈 조건이 될 column의 operator를 정해줍니다. 위의 shallow-layer 그림에서 초록색에 해당하는 테이블 해더들의 히든백터값의 8~10번째 인덱스값이 각각 해당 column에 적용될 operator의 score값이 되고 이것을 softmax를 통해 가장 큰 값을 취해 operator를 정해주게 됩니다. 
+
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/formula67.PNG)
+
+마지막으로 식 (6)과 식 (7)을 살펴보면 자연어로 된 질문으로 부터 where절의 value값들을 찾아주게 됩니다.
+식 (6)은 자연어로 된 Question에서 where절에 들어갈 value의 시작(start)이 될 지점을 찾아주고 식(7)은 자연어로 된 Question에서 where절에 들어갈 value의 끝(end)이 될 지점을 찾아줍니다. 
+식 (6)은 위에서 찾은 뮤값을 통해 뮤값이 2라면 where절에 들어갈 조건이 2개이므로 value가 2개가 되어야하고 첫번째 where절의 value의 시작을 위의 shallow-layer 그림에서 빨간색에 해당하는 자연어 Quesion의 히든백터들의 1번째 인덱스 값들을 softmax를 취해서 찾게 됩니다. 마찬가지로 두번째 where절의 value의 시작은 자연어 Quesion의 히든백터들의 2번째 인덱스 값들을 softmax를 취해서 찾게됩니다.
+식 (6)에서 value의 start 지점을 찾았다면 식 (7)에서는 같은 방법으로 value의 end지점을 찾습니다. 첫번째 where절의 value의 끝(end)을 위의 shallow-layer 그림에서 빨간색에 해당하는 자연어 Quesion의 히든백터들의 101(1+100)번째 인덱스 값들을 softmax를 취해서 찾게 됩니다.
+그리하여 자연어로 된 Question에서 첫번째 토큰의 1번째 인덱스의 히든백터값과 세번째 토큰의 101번째 인덱스의 히든백터값이 softmax를 통해 선택되면 첫번째 where절 조건의 value는 자연어 Quesion의 첫번째 토큰부터 세번째 토큰까지가 됩니다.
+
