@@ -4,7 +4,7 @@ title: "SQLova"
 date: "2019-02-23 21:14"
 category: Paper Review
 tag: [NLP, wikiSQL, Natural Language to SQL, 고급]
-author: KBG
+author: 김병건
 ---
 
 # **SQLova**
@@ -68,7 +68,7 @@ Table-Aware BERT는 기존의 BERT를 이용하여 자연어로 된 질의와 �
 그렇게 되면 Table-Aware BERT를 통해 각각 토큰의 Hidden Vector값이 나오게 됩니다. 이 word contextualization이 반영된 Hidden Vector 값을 이용하여 뒤에 나올 3가지 model scheme을 가지고 Natural Language to SQL task의 성는을 크게 높인 것이 핵심입니다.
 
 
-##### **3 model scheme**
+#### **3 model scheme**
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/3model_scheme.png)
 
@@ -115,12 +115,57 @@ shallow layer는 어떠한 trainable parameter도 가지고 있지 않은 간단
 
 그리하여 자연어로 된 Question에서 첫번째 토큰의 1번째 인덱스의 히든백터값과 세번째 토큰의 101번째 인덱스의 히든백터값이 softmax를 통해 선택되면 첫번째 where절 조건의 value는 자연어 Quesion의 첫번째 토큰부터 세번째 토큰까지가 됩니다.
 
+여기까지가 shallow layer에 대한 설명이 되겠습니다.
 
-
-
+###### **Decoder-Layer & NL2SQL-Layer**
 
 ![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/decoder.png)
 
+Decoder-Layer는 이전 연구인 SQL-Net([arxiv](https://arxiv.org/pdf/1711.04436.pdf))의 모델구조를 가져온 것 입니다. 
+
+SQL-Net에서는 word input으로 word embedding 기법인 GloVe 를 사용한 반면에 이 논문에서는 Table-Aware BERT를 이용해 히든백터 값을 이용하여 word input을 사용하여 Table-Aware BERT의 우수성을 보이고자 했습니다.
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/NL2SQL.png)
+
+NL2SQL-Layer(SQLova)는 Table-Aware BERT의 output(히든백터)값을 이용하여 각각 6가지 component를 구할수 있는 모델을 구성한 모델구조로 Trainable한 parameter가 없는 Shallow-Layer보다 보다 복잡한 문제를 풀 수 있게끔 기대되는 모델로 뒤의 실험에서 좋은 성능을 낸 SQLova 모델 입니다.  
 
 
 
+
+#### **Experiment**
+
+이제 Experiment 부분을 간단하게 살펴보고 포스트를 마치겠습니다.
+
+
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/result1.png)
+
+LF는 SQL이 정확하게 생성 되었는지를 판단하는 정확도 이고 X는 자연어로 된 질문에 대한 정답에 대한 정확도 입니다. 당연히 LF가 정확하게 만들어졌다면 X는 맞게 되므로 LF가 좀 더 어려운 task일것 입니다.
+EG는 Excution Guide로 SQL EXcution을 위한 룰을 적용한 것이라고 보시면 됩니다. 예를들어 String값을 가지는 column에 MAX나 AVERAGE와 같은 aggregation이 적용되지 않도록 하는 룰입니다.
+
+Table2를 살펴보면 loss fuction으로만 구성된 Shallow-Layer를 가지고 Table-Aware BERT를 fine-tuning한 모델이 기존의 모델들 보다도 훨씬 좋은 성능을 내는 것을 보여줍니다. EG가 없을때는 Shallow-Layer가 NL2SQL-Layer보다도 좋은 성능을 내어 가장 우수한 성능을 내게 됩니다. 하지만 EG를 적용한 경우 NL2SQL이 가장 좋은 성능을 내었고 이 모델이 SQLova가 됩니다.
+
+
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/result2.png)
+
+Table3은 SQLova와 Shallow-Layer의 성능을 6가지 componenet별로 비교한 것 입니다.
+
+
+
+![alt text](https://github.com/BroCoLySTyLe/SQLovaReview/blob/master/images/result3.png)
+
+Table4는 ablation study를 진행한 결과인데, 첫번째 줄은 이 논문의 SQLova의 성능이고 두번째줄은 이 논문에서 사용한 BERT-large(Table-Aware BERT)대신에 BERT-Base를 사용한 성능이고, 세번째줄은 Table-Aware BERT의 fine-tuning을 적용하지 않은모델의 성능이고, 네번째줄은 BERT-large대신에 GloVe를 사용했을때의 결과입니다.
+
+첫번째 줄과 두번째 줄의 결과를 비교하였을때, BERT-large의 성능이 BERT-Base보다 뛰어나지만 BERT-Base도 좋은 결과를 내는것을 보여줍니다.
+
+첫번째 줄과 세번째 줄의 결과를 비교하였을때, BERT의 fine-tuning이 성능에 미치는 영향이 매우 크다는 것을 알 수 있습니다.   
+
+첫번째 줄과 네번째 줄의 결과를 비교하였을때, Contextualized word vector를 구성할수 있는 Table-Aware BERT의 적용이 엄청난 성능향상을 보였다는것을 알 수 있습니다.
+
+
+---
+
+논문에 나오는 그림과 Table의 출처는 "A Comprehensive Exploration on WikiSQL with Table-Aware Word Contextualization"* ([arxiv](https://arxiv.org/pdf/1902.01069.pdf)) 논문이며 설명을 위해 수정한 그림도 있습니다. 
+
+감사합니다.
